@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { RestProvider } from "../../providers/rest/rest";
+import { HttpClient } from '@angular/common/http';
+
+//import { RestProvider } from "../../providers/rest/rest";
 
 
 @Component({
@@ -15,7 +17,8 @@ export class HomePage {
   private response: any;
 
   constructor(public navCtrl: NavController,
-              public restProvider: RestProvider,
+              //public restProvider: RestProvider,
+              public http: HttpClient,
               public alertCtrl: AlertController,
               public camera: Camera,
               public domSanitizer: DomSanitizer) {}
@@ -23,14 +26,24 @@ export class HomePage {
   getPerson() {
     console.log(typeof this.image);
 
-    this.restProvider.getPerson(this.image)
-      .then(data => {
-        console.log(data);
-        this.response = data;
-      })
-      .catch(err => {
-        this.displayErrorAlert(err.message)
-      })
+    let formData: FormData = new FormData();
+    formData.append('file', this.image);
+
+    this.http.post('https://face-cognition.herokuapp.com/', formData,
+                  {responseType: "text"})
+        .subscribe(res =>{
+          this.response = res;
+        }, err => {
+          this.displayErrorAlert(err.message);
+        });
+    // this.restProvider.getPerson(this.image)
+    //   .then(data => {
+    //     console.log(data);
+    //     this.response = data;
+    //   })
+    //   .catch(err => {
+    //     this.displayErrorAlert(err.message)
+    //   })
   }
 
   onTakePicture() {

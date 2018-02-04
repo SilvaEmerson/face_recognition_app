@@ -7,7 +7,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { RestProvider } from '../providers/rest/rest';
 import { Camera } from '@ionic-native/camera';
 
 @NgModule({
@@ -30,7 +29,6 @@ import { Camera } from '@ionic-native/camera';
     Camera,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    RestProvider
   ]
 })
 export class AppModule {}

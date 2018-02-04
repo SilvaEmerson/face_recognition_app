@@ -20,11 +20,9 @@
         Whose is the picture
         <ion-icon name="locate"></ion-icon>
       </button>
-      <ion-card>
-        <ion-card-content>
+        <ion-card-content *ngIf="response">
           {{response}}
         </ion-card-content>
-      </ion-card>
     </ion-card-content>
     <!-- </ion-card>
     <ion-card style="margin-left: 35%; margin-right: 15%;">
