@@ -1,0 +1,8 @@
+{
+  "name": "face_recog_app",
+  "app_id": "",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
