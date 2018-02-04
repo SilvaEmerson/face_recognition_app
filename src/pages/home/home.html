@@ -1,14 +1,38 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Ionic Blank
+      Home
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+  <ion-card>
+    <ion-card-content>
+      <button ion-button icon-rigth (click)="onTakePicture()">
+        Take a picture
+        <ion-icon name="camera"></ion-icon>
+      </button>
+  
+      <img *ngIf="image" [src]="domSanitizer.bypassSecurityTrustUrl(image)" alt="">
+  
+      <button *ngIf="image" ion-button icon-rigth (click)="getPerson()">
+        Whose is the picture
+        <ion-icon name="locate"></ion-icon>
+      </button>
+      <ion-card>
+        <ion-card-content>
+          {{response}}
+        </ion-card-content>
+      </ion-card>
+    </ion-card-content>
+    <!-- </ion-card>
+    <ion-card style="margin-left: 35%; margin-right: 15%;">
+        <button ion-button (click)="setState()">
+            Tap me!
+        </button>
+        <ion-card-content *ngIf="state">
+            You find me!
+        </ion-card-content> -->
+  </ion-card>
 </ion-content>
