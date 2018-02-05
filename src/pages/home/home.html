@@ -13,12 +13,16 @@
         Take a picture
         <ion-icon name="camera"></ion-icon>
       </button>
-  
+
+      <button ion-button icon-rigth (click)="onChooseImageFromGallery()">
+        Choose from gallery
+        <ion-icon name="image"></ion-icon>
+      </button>
+
       <img *ngIf="image" [src]="domSanitizer.bypassSecurityTrustUrl(image)" alt="">
   
       <button *ngIf="image" ion-button icon-rigth (click)="getPerson()">
         Whose is the picture
-        <ion-icon name="locate"></ion-icon>
       </button>
         <ion-card-content *ngIf="response">
           {{response}}
