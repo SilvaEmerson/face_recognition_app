@@ -4,11 +4,11 @@ import { HttpClientModule } from "@angular/common/http";
 import { IonicApp, IonicErrorHandler, IonicModule, AlertController } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-
+import { FileTransfer, FileTransferObject } from "@ionic-native/file-transfer";
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { Camera } from '@ionic-native/camera';
-import { FileChooser } from "@ionic-native/file-chooser";
+import { File } from "@ionic-native/file";
 
 @NgModule({
   declarations: [
@@ -28,7 +28,9 @@ import { FileChooser } from "@ionic-native/file-chooser";
   providers: [
     AlertController,
     StatusBar,
-    FileChooser,
+    File,
+    FileTransfer,
+    FileTransferObject,
     Camera,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
