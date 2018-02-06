@@ -27,6 +27,7 @@ export class HomePage {
   private fileTransfer: FileTransferObject = this.transfer.create();
 
   getPerson() {
+
     let options: FileUploadOptions = {
       fileKey: 'file'
     }
@@ -35,36 +36,14 @@ export class HomePage {
         .then(res => {
           this.response = res.response;
         }, err => {
-          this.displayErrorAlert(err);
+          this.displayErrorAlert(err.message);
         })
-    // let formData: FormData = new FormData();
-    // formData.append("file", this.image);
-
-    // var formData = "file=" + this.image;
-
-    // this.displayErrorAlert(JSON.stringify({
-    //   file: this.image
-    // }));
-
-    // this.http.post(this.url, formData, {
-    //   headers: {
-    //     "Content-Type": "multipart/form-data"
-    //   },
-    //   responseType: "text"
-    // })
-    // .toPromise()
-    // .then(res => {
-    //   this.displayErrorAlert(res);
-    //   this.response = res;
-    // }, err => {
-    //   this.displayErrorAlert(err.message);
-    // });
   }
 
   onTakePicture() {
     const options: CameraOptions = {
       quality: 100,
-      destinationType: this.camera.DestinationType.DATA_URL,
+      destinationType: this.camera.DestinationType.FILE_URI,
       saveToPhotoAlbum: false,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
