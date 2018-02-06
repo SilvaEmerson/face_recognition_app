@@ -3,8 +3,7 @@ import { NavController, AlertController } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { HttpClient } from '@angular/common/http';
-
-//import { RestProvider } from "../../providers/rest/rest";
+import { FileChooser } from "@ionic-native/file-chooser";
 
 
 @Component({
@@ -12,42 +11,42 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: 'home.html'
 })
 export class HomePage {
-  
-  private image: string;
+
+  private url: string = "https://testfacecog.herokuapp.com/";
+  private image: any;
   private response: any;
+  private imgUrl: any;
 
   constructor(public navCtrl: NavController,
-              //public restProvider: RestProvider,
               public http: HttpClient,
               public alertCtrl: AlertController,
               public camera: Camera,
+              public fileChooser: FileChooser,
               public domSanitizer: DomSanitizer) {}
 
   getPerson() {
-    console.log(typeof this.image);
+    // let formData: FormData = new FormData();
+    // formData.append("file", this.image);
 
-    let formData: FormData = new FormData();
-    formData.append('file', this.image, 'submition.jpeg');
+    var formData = "file=" + this.image;
 
-    this.http.post('https://face-cognition.herokuapp.com/', formData,
-                  {headers: {
-                    'Content-Type': 'multipart/form-data',
-                    
-                  },
-                  responseType: "text"})
-        .subscribe(res =>{
-          this.response = res;
-        }, err => {
-          this.displayErrorAlert(err.message);
-        });
-    // this.restProvider.getPerson(this.image)
-    //   .then(data => {
-    //     console.log(data);
-    //     this.response = data;
-    //   })
-    //   .catch(err => {
-    //     this.displayErrorAlert(err.message)
-    //   })
+    this.displayErrorAlert(JSON.stringify({
+      file: this.image
+    }));
+
+    this.http.post(this.url, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      },
+      responseType: "text"
+    })
+    .toPromise()
+    .then(res => {
+      this.displayErrorAlert(res);
+      this.response = res;
+    }, err => {
+      this.displayErrorAlert(err.message);
+    });
   }
 
   onTakePicture() {
@@ -63,7 +62,6 @@ export class HomePage {
     this.camera.getPicture(options).then((imageData) => {
       // this.image = 'data:image/jpeg;base64,' + imageData;
       this.image = imageData;
-      console.log(this.domSanitizer.bypassSecurityTrustUrl(imageData)['changingThisBreaksApplicationSecurity']);
     }, (err) => {
       this.displayErrorAlert(err.message);
     });
@@ -74,6 +72,7 @@ export class HomePage {
       quality: 100,
       destinationType: this.camera.DestinationType.FILE_URI,
       saveToPhotoAlbum: false,
+      correctOrientation: true,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
@@ -81,16 +80,16 @@ export class HomePage {
 
     this.camera.getPicture(options).then((imageData) => {
       // this.image = 'data:image/jpeg;base64,' + imageData;
-      this.image = this.domSanitizer.bypassSecurityTrustUrl(imageData)['changingThisBreaksApplicationSecurity'];
-      console.log(this.domSanitizer.bypassSecurityTrustUrl(imageData)['changingThisBreaksApplicationSecurity']);
+      this.image = imageData.split("?", 1)[0];
     }, (err) => {
       this.displayErrorAlert(err.message);
     });
   }
 
+
   displayErrorAlert(error) {
     let alert = this.alertCtrl.create({
-      title: 'Error',
+      title: 'Info',
       subTitle: error,
       buttons: ['OK']
     });

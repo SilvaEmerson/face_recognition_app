@@ -19,8 +19,8 @@
         <ion-icon name="image"></ion-icon>
       </button>
 
-      <img *ngIf="image" [src]="domSanitizer.bypassSecurityTrustUrl(image)" alt="">
-  
+      <img *ngIf="image" [src]="domSanitizer.bypassSecurityTrustUrl(image)">
+
       <button *ngIf="image" ion-button icon-rigth (click)="getPerson()">
         Whose is the picture
       </button>
@@ -28,13 +28,5 @@
           {{response}}
         </ion-card-content>
     </ion-card-content>
-    <!-- </ion-card>
-    <ion-card style="margin-left: 35%; margin-right: 15%;">
-        <button ion-button (click)="setState()">
-            Tap me!
-        </button>
-        <ion-card-content *ngIf="state">
-            You find me!
-        </ion-card-content> -->
   </ion-card>
 </ion-content>
