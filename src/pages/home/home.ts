@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { AlertController } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { HttpClient } from '@angular/common/http';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from "@ionic-native/file-transfer";
-import { File } from "@ionic-native/file";
+import { LoadingController } from "ionic-angular";
 
 @Component({
   selector: 'page-home',
@@ -16,13 +15,11 @@ export class HomePage {
   private image: any;
   private response: any;
 
-  constructor(public navCtrl: NavController,
-              public http: HttpClient,
-              public alertCtrl: AlertController,
-              public camera: Camera,
-              public domSanitizer: DomSanitizer,
-              public file: File,
-              public transfer: FileTransfer) {}
+  constructor(private alertCtrl: AlertController,
+              private camera: Camera,
+              private domSanitizer: DomSanitizer,
+              private transfer: FileTransfer,
+              private loadingCtrl: LoadingController) {}
 
   private fileTransfer: FileTransferObject = this.transfer.create();
 
@@ -31,16 +28,24 @@ export class HomePage {
     let options: FileUploadOptions = {
       fileKey: 'file'
     }
+    let loading = this.loadingCtrl.create({
+      content: "Keep calm, waiting response..."
+    });
+    
+    loading.present();
 
     this.fileTransfer.upload(this.image, this.url, options)
         .then(res => {
+          loading.dismiss();
           this.response = res.response;
         }, err => {
+          loading.dismiss();
           this.displayErrorAlert(err.message);
         })
   }
 
   onTakePicture() {
+
     const options: CameraOptions = {
       quality: 100,
       destinationType: this.camera.DestinationType.FILE_URI,
@@ -50,15 +55,18 @@ export class HomePage {
       sourceType: this.camera.PictureSourceType.CAMERA,
     }
 
+    this.response = null;
     this.camera.getPicture(options).then((imageData) => {
-      // this.image = 'data:image/jpeg;base64,' + imageData;
-      this.image = imageData;
+      this.image = imageData.split("?", 1)[0];
     }, (err) => {
       this.displayErrorAlert(err.message);
     });
+
+    this.getPerson();
   }
 
   onChooseImageFromGallery() {
+
     const options: CameraOptions = {
       quality: 100,
       destinationType: this.camera.DestinationType.FILE_URI,
@@ -69,10 +77,10 @@ export class HomePage {
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
     }
 
+    this.response = null;
     this.camera.getPicture(options).then((imageData) => {
-      // this.image = 'data:image/jpeg;base64,' + imageData;
       this.image = imageData.split("?", 1)[0];
-      this.image
+      this.getPerson();
     }, (err) => {
       this.displayErrorAlert(err.message);
     });
@@ -80,6 +88,7 @@ export class HomePage {
 
 
   displayErrorAlert(error) {
+
     let alert = this.alertCtrl.create({
       title: 'Info',
       subTitle: error,

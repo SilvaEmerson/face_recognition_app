@@ -1,32 +1,34 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
-      Home
+    <ion-title text-center>
+      FaceRecognition
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <ion-card>
+  <button ion-button icon-start outline block color="dark" (click)="onTakePicture()">
+    <ion-icon name="camera"></ion-icon>
+    Take a picture
+  </button>
+  
+  <button ion-button icon-start outline block color="dark" (click)="onChooseImageFromGallery()">
+    <ion-icon name="image"></ion-icon>
+    Choose from gallery
+  </button>
+  
+  <img *ngIf="image" [src]="domSanitizer.bypassSecurityTrustUrl(image)">
+  
+  <!-- <button *ngIf="image" ion-button icon-end color="secondary" block (click)="getPerson()">
+    Submit
+    <ion-icon name="checkmark"></ion-icon>
+  </button> -->
+  <ion-card-content *ngIf="response">
+    {{response}}
+  </ion-card-content>
+
+  <!-- <ion-card>
     <ion-card-content>
-      <button ion-button icon-rigth (click)="onTakePicture()">
-        Take a picture
-        <ion-icon name="camera"></ion-icon>
-      </button>
-
-      <button ion-button icon-rigth (click)="onChooseImageFromGallery()">
-        Choose from gallery
-        <ion-icon name="image"></ion-icon>
-      </button>
-
-      <img *ngIf="image" [src]="domSanitizer.bypassSecurityTrustUrl(image)">
-
-      <button *ngIf="image" ion-button icon-rigth (click)="getPerson()">
-        Whose is the picture
-      </button>
-        <ion-card-content *ngIf="response">
-          {{response}}
-        </ion-card-content>
     </ion-card-content>
-  </ion-card>
+  </ion-card> -->
 </ion-content>

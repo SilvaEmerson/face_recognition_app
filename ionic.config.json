@@ -1,5 +1,5 @@
 {
-  "name": "face_recog_app",
+  "name": "FaceRecognition",
   "app_id": "",
   "type": "ionic-angular",
   "integrations": {
