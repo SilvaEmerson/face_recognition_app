@@ -13,7 +13,7 @@ export class HomePage {
 
   private image: any;
   private response: any;
-  private url: string = "https://face-recognition-lica.herokuapp.com/";
+  private url: string = "https://face-recognition-lica.herokuapp.com/upload_image";
 
   constructor(private alertCtrl: AlertController,
               private camera: Camera,
@@ -41,14 +41,12 @@ export class HomePage {
           loading.dismiss();
           this.response = JSON.parse(res.response);
                     
-          this.response = this.response[0];
+          this.response = this.response[0].response;
 
-          if(this.response.hasOwnProperty('result')){
-            this.response = this.response.result;
-          }else{
-            this.response = [this.response.response];
+          if(typeof this.response == 'string'){
+            this.response = [this.response];
           }
-
+          
           this.response = this.response.filter( val =>{
             return val != 'Unknow person';
           });

@@ -7,12 +7,24 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>ImageList</ion-title>
+    <ion-title text-center>FaceRecognition</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+<ion-card-content>
+  <ion-list>
 
+    <ion-list-header text-center>
+      Image List
+    </ion-list-header>
+    <ion-item *ngFor="let p of response" text-center>
+      {{p}}
+    </ion-item>
+
+  </ion-list>
+
+</ion-card-content>
 </ion-content>
