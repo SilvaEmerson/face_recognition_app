@@ -1,33 +1,38 @@
 import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from "@ionic-native/file-transfer";
 import { LoadingController } from "ionic-angular";
-import { HttpClient } from "@angular/common/http";
-@Component({
-  selector: 'page-home',
-  templateUrl: 'home.html'
-})
-export class HomePage {
 
+@Component({
+  selector: 'page-add-image',
+  templateUrl: 'add-image.html',
+})
+export class AddImagePage {
+
+  private url: string = "https://face-recognition-lica.herokuapp.com/add_image";
   private image: any;
+  private personName: string;
   private response: any;
-  private url: string = "https://face-recognition-lica.herokuapp.com/";
 
   constructor(private alertCtrl: AlertController,
-              private camera: Camera,
-              private domSanitizer: DomSanitizer,
-              private transfer: FileTransfer,
-              private loadingCtrl: LoadingController,
-              private http: HttpClient) {}
+    private camera: Camera,
+    private domSanitizer: DomSanitizer,
+    private transfer: FileTransfer,
+    private loadingCtrl: LoadingController) { }
 
   private fileTransfer: FileTransferObject = this.transfer.create();
 
-  getPerson() {
+  addPerson() {
 
     let options: FileUploadOptions = {
       fileKey: 'file'
+    }
+
+    if(this.personName.length != 0){
+        options.fileName = this.personName + '.jpeg';
     }
 
     let loading = this.loadingCtrl.create({
@@ -37,28 +42,14 @@ export class HomePage {
     loading.present();
 
     this.fileTransfer.upload(this.image, this.url, options)
-        .then(res => {
-          loading.dismiss();
-          this.response = JSON.parse(res.response);
-                    
-          this.response = this.response[0];
-
-          if(this.response.hasOwnProperty('result')){
-            this.response = this.response.result;
-          }else{
-            this.response = [this.response.response];
-          }
-
-          this.response = this.response.filter( val =>{
-            return val != 'Unknow person';
-          });
-
-        }, err => {
-          loading.dismiss();
-          this.displayErrorAlert(err.message);
-        })
+      .then(res => {
+        loading.dismiss();
+        this.response = res.response;
+      }, err => {
+        loading.dismiss();
+        this.displayErrorAlert(err.message);
+      })
   }
-
 
   onTakePicture() {
 
@@ -74,12 +65,11 @@ export class HomePage {
     this.response = null;
     this.camera.getPicture(options).then((imageData) => {
       this.image = imageData.split("?", 1)[0];
-      this.getPerson();
+      this.displayPromptFile();
     }, (err) => {
       this.displayErrorAlert(err.message);
     });
   }
-
 
   onChooseImageFromGallery() {
 
@@ -96,7 +86,7 @@ export class HomePage {
     this.response = null;
     this.camera.getPicture(options).then((imageData) => {
       this.image = imageData.split("?", 1)[0];
-      this.getPerson();
+      this.displayPromptFile();
     }, (err) => {
       this.displayErrorAlert(err.message);
     });
@@ -112,6 +102,30 @@ export class HomePage {
     });
 
     alert.present();
+  }
+
+
+  displayPromptFile() {
+
+    let prompt = this.alertCtrl.create({
+      title: 'Type the person name',
+      inputs: [
+        {
+          name: 'person',
+          placeholder: 'Person name'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Save',
+          handler: data => {
+              this.personName = data.person;
+              console.log(data);
+          }
+        }
+      ]
+    });
+    prompt.present();
   }
 
 }
