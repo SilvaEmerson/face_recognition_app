@@ -13,18 +13,22 @@ export class HomePage {
 
   private image: any;
   private response: any;
+  private unknowPersonsNumber: number;
   private url: string = "https://face-recognition-lica.herokuapp.com/upload_image";
 
   constructor(private alertCtrl: AlertController,
               private camera: Camera,
               private domSanitizer: DomSanitizer,
               private transfer: FileTransfer,
-              private loadingCtrl: LoadingController,
-              private http: HttpClient) {}
+              private loadingCtrl: LoadingController) {}
 
   private fileTransfer: FileTransferObject = this.transfer.create();
 
+
   getPerson() {
+
+    this.unknowPersonsNumber = 0;
+    this.response = [];
 
     let options: FileUploadOptions = {
       fileKey: 'file'
@@ -39,17 +43,36 @@ export class HomePage {
     this.fileTransfer.upload(this.image, this.url, options)
         .then(res => {
           loading.dismiss();
+
           this.response = JSON.parse(res.response);
-                    
+
           this.response = this.response[0].response;
 
           if(typeof this.response == 'string'){
-            this.response = [this.response];
+              if (this.response.includes("An error")){
+                  this.displayErrorAlert(this.response);
+              }else{
+                  this.response = [this.response];
+              }
           }
-          
-          this.response = this.response.filter( val =>{
-            return val != 'Unknow person';
+
+          this.response.forEach(val => {
+              if(val == 'Unknow person'){
+                  this.unknowPersonsNumber += 1;
+              }
           });
+
+          this.response = this.response.filter( value => {
+            return value != 'Unknow person'
+          });
+          
+          let lengthBefore = this.response.length;
+
+          this.response = this.response.filter( (value, index, array) => {
+            return array.indexOf(value) == index;
+          });
+
+          this.unknowPersonsNumber += lengthBefore - this.response.length;
 
         }, err => {
           loading.dismiss();
@@ -64,6 +87,7 @@ export class HomePage {
       quality: 100,
       destinationType: this.camera.DestinationType.FILE_URI,
       saveToPhotoAlbum: false,
+      correctOrientation: true,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
       sourceType: this.camera.PictureSourceType.CAMERA,

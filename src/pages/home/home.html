@@ -19,22 +19,26 @@
 
   <img *ngIf="image" [src]="domSanitizer.bypassSecurityTrustUrl(image)">
 
-  <!-- <button *ngIf="image" ion-button icon-end color="secondary" block (click)="getPerson()">
-    Submit
-    <ion-icon name="checkmark"></ion-icon>
-  </button> -->
-  <ion-card-content *ngIf="response">
-  <ion-list>
+ <div *ngIf="response" text-center>
+      <ion-list>
 
-    <ion-list-header text-center >
-      Persons
-    </ion-list-header>
-    <ion-item *ngFor="let p of response" text-center>
-      {{p}}
-    </ion-item>
+        <ion-list-header text-center >
+          Persons
+        </ion-list-header>
+        <ion-item *ngFor="let p of response" text-center>
+          {{p}}
+        </ion-item>
 
-  </ion-list>
+        <ion-item *ngIf="unknowPersonsNumber > 0" text-center>
+            {{unknowPersonsNumber}} Unknow person(s)
+        </ion-item>
+      </ion-list>
 
-  </ion-card-content>
+
+      <button ion-button icon-end color="secondary" (click)="getPerson()">
+        Retry
+        <ion-icon name="refresh"></ion-icon>
+      </button>
+  </div>
 
 </ion-content>

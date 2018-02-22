@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { HomePage } from "../home/home";
 import { AddImagePage } from "../add-image/add-image";
 import { ImageListPage } from "../image-list/image-list";
