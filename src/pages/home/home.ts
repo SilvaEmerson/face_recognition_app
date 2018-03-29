@@ -5,6 +5,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from "@ionic-native/file-transfer";
 import { LoadingController } from "ionic-angular";
 import { HttpClient } from "@angular/common/http";
+import { CameraMethodsProvider } from "../../providers/camera-methods/camera-methods";
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -20,7 +21,8 @@ export class HomePage {
               private camera: Camera,
               private domSanitizer: DomSanitizer,
               private transfer: FileTransfer,
-              private loadingCtrl: LoadingController) {}
+              private loadingCtrl: LoadingController,
+              private cameraMethods: CameraMethodsProvider) {}
 
   private fileTransfer: FileTransferObject = this.transfer.create();
 
@@ -65,7 +67,7 @@ export class HomePage {
           this.response = this.response.filter( value => {
             return value != 'Unknow person'
           });
-          
+
           let lengthBefore = this.response.length;
 
           this.response = this.response.filter( (value, index, array) => {
@@ -81,48 +83,9 @@ export class HomePage {
   }
 
 
-  onTakePicture() {
+  private onTakePicture = this.cameraMethods.onTakePicture(this.getPerson);
 
-    const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      saveToPhotoAlbum: false,
-      correctOrientation: true,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
-      sourceType: this.camera.PictureSourceType.CAMERA,
-    }
-
-    this.response = null;
-    this.camera.getPicture(options).then((imageData) => {
-      this.image = imageData.split("?", 1)[0];
-      this.getPerson();
-    }, (err) => {
-      this.displayErrorAlert(err.message);
-    });
-  }
-
-
-  onChooseImageFromGallery() {
-
-    const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      saveToPhotoAlbum: false,
-      correctOrientation: true,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
-      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-    }
-
-    this.response = null;
-    this.camera.getPicture(options).then((imageData) => {
-      this.image = imageData.split("?", 1)[0];
-      this.getPerson();
-    }, (err) => {
-      this.displayErrorAlert(err.message);
-    });
-  }
+  private onChooseImageFromGallery = this.cameraMethods.onChooseImageFromGallery(this.getPerson)
 
 
   displayErrorAlert(error) {

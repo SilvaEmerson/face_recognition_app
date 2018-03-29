@@ -11,14 +11,14 @@ import { AddImagePage } from "../pages/add-image/add-image"
 import { Camera } from '@ionic-native/camera';
 import { HttpClientModule } from "@angular/common/http";
 import { ImageListPage } from "../pages/image-list/image-list";
-
+import { CameraMethodsProvider } from "../providers/camera-methods/camera-methods";
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     AddImagePage,
     ListPage,
-    ImageListPage
+    ImageListPage,
   ],
   imports: [
     BrowserModule,
@@ -31,7 +31,7 @@ import { ImageListPage } from "../pages/image-list/image-list";
     HomePage,
     AddImagePage,
     ListPage,
-    ImageListPage
+    ImageListPage,
   ],
   providers: [
     AlertController,
@@ -41,6 +41,7 @@ import { ImageListPage } from "../pages/image-list/image-list";
     Camera,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    CameraMethodsProvider,
   ]
 })
 export class AppModule {}
