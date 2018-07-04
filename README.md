@@ -1,6 +1,5 @@
 # FaceRecognition Application
 
----
 
 ## The app + API 
 
@@ -10,15 +9,15 @@
 
 1. Add image:
 
-[add]: ./image-readme/add-image.gif
+![add](.image-readme/add-image.gif)
 
 2. List the images add:
 
-[list]: ./image-readme/list-image.gif
+![list](.image-readme/list-image.gif)
 
 3. Run the recognition:
 
-[recognition]: ./image-readme/recognition.gif
+![recognition](.image-readme/recognition-face.gif)
 
 
 ## Repository of the API
