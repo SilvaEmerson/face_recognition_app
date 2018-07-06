@@ -1,31 +1,31 @@
 # FaceRecognition Application
 
-
 ## The app + API 
 
-- Application of the face recongnition with a the help of the model trained has a an accuracy of 99.38%. This application it comunnicates with a API development in Python for control of request in HTTP with all images send to server...
+- FaceRecognition is a facial recognition application that was developed with the help of a 99.38% trained model that runs on an API also developed by us. This application communicates with the API receiving the image sent and returning it with the face recognition.
 
-## Steps for recognition using the app 
+## Steps for recognition using the app ( add image | list image | recognize )
 
-1. Add image:
-
-![add](.image-readme/add-image.gif)
-
-2. List the images add:
-
-![list](.image-readme/list-image.gif)
-
-3. Run the recognition:
-
-![recognition](.image-readme/recognition-face.gif)
+<div align="center">
+    <div style="display:inline; padding-right:20px">
+        <img src=".image-readme/add-image.gif" width="200" >
+    </div>
+    <div style="display:inline; padding-right:20px">
+     <img src=".image-readme/list-image.gif" width="200">
+    </div>
+    <div style="display:inline">
+    <img src=".image-readme/recognition-face.gif" width="200">
+    </div>
+</div>
 
 
 ## Repository of the API
-- [API](https://github.com/silvaemerson/face_recognition_api) development in Python with Flask framework;
+- [API](https://github.com/silvaemerson/face_recognition_api) developed in Python with Flask framework;
+
 
 ## Framework used: 
 - This app was made using [Ionic framework](https://github.com/ionic-team/ionic)
-- API development with [Flask framework](http://flask.pocoo.org/) 
+- API developed with [Flask framework](http://flask.pocoo.org/) 
 
 
 ## Team 
