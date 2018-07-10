@@ -27,6 +27,8 @@
 - This app was made using [Ionic framework](https://github.com/ionic-team/ionic)
 - API developed with [Flask framework](http://flask.pocoo.org/) 
 
+## Model trained 
+- [Model](https://github.com/ageitgey/face_recognition) trained used in API.
 
 ## Team 
 
